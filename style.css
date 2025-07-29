@@ -1,46 +1,104 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #ffe6f0;
-  margin: 20px;
-  color: #4a004a;
-  text-align: center;
+  background: #fff0f6;
+  color: #6a1b4d;
+  padding: 20px;
 }
 
 h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+  color: #a8326e;
+}
+
+.ano {
+  margin-bottom: 40px;
+  border: 2px solid #e76ebf;
+  border-radius: 12px;
+  padding: 20px;
+  background: #ffe6f0;
+}
+
+.ano > h2 {
+  margin-bottom: 15px;
+  color: #c2185b;
+  border-bottom: 2px solid #c2185b;
+  padding-bottom: 8px;
+}
+
+.semestre {
   margin-bottom: 20px;
 }
 
-#malla {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  max-width: 1100px;
-  margin: 0 auto;
+.semestre > h3 {
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #9c2751;
+}
+
+.malla {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .ramo {
-  padding: 15px;
-  border-radius: 10px;
-  background: #ffc0d9;
   cursor: pointer;
+  background: #f7c8e0;
+  border-radius: 8px;
+  padding: 10px 15px;
+  min-width: 180px;
+  text-align: center;
+  font-weight: 600;
+  color: #5a1046;
+  box-shadow: 1px 1px 5px #d997bf;
   user-select: none;
-  transition: background-color 0.3s, box-shadow 0.3s;
-  box-shadow: 0 0 8px rgba(255, 105, 180, 0.6);
+  transition: all 0.3s ease;
   border: 2px solid transparent;
 }
 
+.ramo:hover {
+  background: #fcb3d8;
+  box-shadow: 2px 2px 8px #d06fb1;
+  border-color: #b63b75;
+}
+
 .ramo.bloqueado {
-  background: #f7cbd9;
-  color: #8c517a;
+  background: #f4b7d6;
+  color: #8e4c6b;
   cursor: not-allowed;
   box-shadow: none;
-  opacity: 0.5;
+  opacity: 0.6;
+  border-color: #d894af;
 }
 
 .ramo.aprobado {
-  background: #ff4da6;
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 0 12px #ff1a75;
-  border-color: #ff1a75;
+  background: #d94a95;
+  color: #fff;
+  box-shadow: 0 0 10px #f58ec7;
+  border-color: #f059a4;
+}
+
+.ramo.aprobado:hover {
+  background: #e261b0;
+  box-shadow: 0 0 15px #f58ec7;
+}
+
+@media (max-width: 600px) {
+  .malla {
+    justify-content: center;
+  }
+
+  .ramo {
+    min-width: 140px;
+    font-size: 14px;
+  }
 }
