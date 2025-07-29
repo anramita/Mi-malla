@@ -1,209 +1,122 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Malla Curricular Interactiva Completa</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #ffe6f0;
-    margin: 20px;
-    color: #4a004a;
-    text-align: center;
-  }
-  h1 {
-    margin-bottom: 20px;
-  }
-  #malla {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 15px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .ramo {
-    padding: 15px;
-    border-radius: 10px;
-    background: #ffc0d9;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 0 8px rgba(255, 105, 180, 0.6);
-    border: 2px solid transparent;
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-  }
-  .bloqueado {
-    background: #f7cbd9;
-    color: #8c517a;
-    cursor: not-allowed;
-    box-shadow: none;
-    opacity: 0.5;
-  }
-  .aprobado {
-    background: #ff4da6;
-    color: white;
-    font-weight: bold;
-    box-shadow: 0 0 12px #ff1a75;
-    border-color: #ff1a75;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Malla Curricular Interactiva</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Malla Curricular Interactiva Completa</h1>
-  <div id="malla"></div>
+  <h1>Malla Curricular Interactiva</h1>
 
-<script>
-  const ramos = [
-    // Primer año - I Semestre
-    { nombre: "Fundamentos de Enfermería I", requisitos: [], abre: ["Integración al Desempeño Profesional I"] },
-    { nombre: "Química General y Orgánica", requisitos: [], abre: ["Bioquímica"] },
-    { nombre: "Biología Celular y Genética", requisitos: [], abre: ["Bioquímica", "Biología del Desarrollo y Embriología Humana", "Histología", "Anatomía", "Fisiología General"] },
-    { nombre: "Matemáticas", requisitos: [], abre: ["Investigación en Salud I"] },
-    { nombre: "Física", requisitos: [], abre: ["Fisiología General", "Investigación en Salud I"] },
-    { nombre: "Educación en Salud I", requisitos: [], abre: ["Educación en Salud II"] },
-    { nombre: "Ciencias Sociales y Salud I", requisitos: [], abre: ["Ciencias Sociales y Salud II"] },
-    { nombre: "Curso de Formación General", requisitos: [], abre: [] },
-    { nombre: "Inglés I", requisitos: [], abre: ["Inglés II"] },
+  <div id="malla-container">
+    <!-- Aquí se cargarán los años y semestres -->
+  </div>
 
-    // Primer año - II Semestre
-    { nombre: "Salud Comunitaria I", requisitos: [], abre: ["Salud Comunitaria II"] },
-    { nombre: "Bioquímica", requisitos: ["Química General y Orgánica", "Biología Celular y Genética"], abre: ["Farmacología"] },
-    { nombre: "Biología del Desarrollo y Embriología Humana", requisitos: ["Biología Celular y Genética"], abre: ["Obstetricia Fisiológica I", "Neonatología I"] },
-    { nombre: "Fisiología General", requisitos: ["Biología Celular y Genética", "Física"], abre: ["Agentes Vivos de Enfermedad", "Fisiología de Sistemas", "Fundamentos de Enfermería II", "Inmunología", "Neonatología I", "Obstetricia Fisiológica I"] },
-    { nombre: "Anatomía", requisitos: ["Biología Celular y Genética"], abre: ["Obstetricia Fisiológica I", "Neonatología I", "Agentes Vivos de Enfermedad", "Fundamentos de Enfermería II", "Ginecología Fisiológica"] },
-    { nombre: "Histología", requisitos: ["Biología Celular y Genética"], abre: ["Obstetricia Fisiológica I", "Neonatología I", "Agentes Vivos de Enfermedad", "Fundamentos de Enfermería II", "Ginecología Fisiológica"] },
-    { nombre: "Integración al Desempeño Profesional I", requisitos: ["Fundamentos de Enfermería I"], abre: ["Fundamentos de Enfermería II", "Obstetricia Fisiológica I", "Neonatología I"] },
-    { nombre: "Curso de Formación General II", requisitos: [], abre: [] },
-    { nombre: "Inglés II", requisitos: ["Inglés I"], abre: ["Inglés III"] },
+  <script src="script.js"></script>
+  <script>
+    // Al cargar la página, armamos la malla dividida por años y semestres
 
-    // Segundo año - III Semestre
-    { nombre: "Fundamentos de Enfermería II", requisitos: ["Fisiología General", "Anatomía", "Histología", "Integración al Desempeño Profesional I"], abre: ["Integración al Desempeño Profesional II"] },
-    { nombre: "Obstetricia Fisiológica I", requisitos: ["Biología del Desarrollo y Embriología Humana", "Fisiología General", "Anatomía", "Histología", "Integración al Desempeño Profesional I"], abre: ["Obstetricia Fisiológica II"] },
-    { nombre: "Neonatología I", requisitos: ["Biología del Desarrollo y Embriología Humana", "Fisiología General", "Anatomía", "Histología", "Integración al Desempeño Profesional I"], abre: ["Neonatología II"] },
-    { nombre: "Fisiología de Sistemas", requisitos: ["Fisiología General"], abre: ["Obstetricia Fisiológica II", "Farmacología", "Neonatología II", "Fisiopatología", "Reproducción Humana", "Ginecología Fisiológica", "Integración al Desempeño Profesional II"] },
-    { nombre: "Inmunología", requisitos: ["Fisiología General"], abre: [] },
-    { nombre: "Agentes Vivos de Enfermedad", requisitos: ["Fisiología General", "Anatomía", "Histología"], abre: ["Neonatología II", "Infectología"] },
-    { nombre: "Ciencias Sociales y Salud II", requisitos: ["Ciencias Sociales y Salud I"], abre: ["Ciencias Sociales y Salud III"] },
-    { nombre: "Inglés III", requisitos: ["Inglés II"], abre: [] },
+    const mallaContainer = document.getElementById("malla-container");
 
-    // Segundo año - IV Semestre
-    { nombre: "Neonatología II", requisitos: ["Neonatología I", "Fisiología de Sistemas", "Agentes Vivos de Enfermedad"], abre: ["Obstetricia Patológica", "Neonatología III", "Clínica de Partos I", "Clínica de Puerperio", "Clínica de Atención Primaria I", "Clínica Neonatal I"] },
-    { nombre: "Obstetricia Fisiológica II", requisitos: ["Obstetricia Fisiológica I", "Fisiología de Sistemas"], abre: ["Obstetricia Patológica", "Neonatología III", "Clínica de Partos I", "Clínica de Puerperio", "Clínica de Atención Primaria I"] },
-    { nombre: "Ginecología Fisiológica", requisitos: ["Fisiología de Sistemas", "Anatomía", "Histología"], abre: ["Clínica de Atención Primaria I"] },
-    { nombre: "Fisiopatología", requisitos: ["Fisiología de Sistemas"], abre: ["Clínica Neonatal I", "Clínica de Atención Primaria I", "Clínica de Partos I", "Clínica de Puerperio", "Neonatología III", "Obstetricia Patológica"] },
-    { nombre: "Infectología", requisitos: ["Agentes Vivos de Enfermedad"], abre: ["Clínica Neonatal I", "Clínica de Atención Primaria I", "Clínica de Partos I", "Clínica de Puerperio"] },
-    { nombre: "Farmacología", requisitos: ["Fisiología de Sistemas", "Bioquímica"], abre: ["Obstetricia Patológica", "Neonatología III", "Clínica de Puerperio", "Clínica de Partos I", "Clínica de Atención Primaria I", "Clínica Neonatal I"] },
-    { nombre: "Integración al Desempeño Profesional II", requisitos: ["Fisiología de Sistemas", "Fundamentos de Enfermería II"], abre: ["Clínica de Salud Comunitaria", "Clínica Neonatal I", "Clínica de Atención Primaria I", "Clínica de Partos I", "Clínica de Puerperio"] },
-    { nombre: "Investigación en Salud I", requisitos: ["Matemáticas", "Física"], abre: ["Gestión y Liderazgo en Salud I", "Investigación en Salud II"] },
+    // Agrupamos ramos por año y semestre (usando la propiedad semestre del objeto)
+    const anos = {
+      1: { nombre: "Primer Año", semestres: { I: [], II: [] } },
+      2: { nombre: "Segundo Año", semestres: { III: [], IV: [] } },
+      3: { nombre: "Tercer Año", semestres: { V: [], VI: [] } },
+      4: { nombre: "Cuarto Año", semestres: { VII: [], VIII: [] } },
+      5: { nombre: "Quinto Año", semestres: { IX: [], X: [] } }
+    };
 
-    // Tercer año - V Semestre
-    { nombre: "Clínica Neonatal I", requisitos: ["Neonatología II", "Fisiopatología", "Farmacología", "Infectología", "Integración al Desempeño Profesional II"], abre: [] },
-    { nombre: "Clínica de Partos I", requisitos: ["Neonatología II", "Obstetricia Fisiológica II", "Fisiopatología", "Farmacología", "Infectología", "Integración al Desempeño Profesional II"], abre: [] },
-    { nombre: "Clínica de Atención Primaria I", requisitos: ["Obstetricia Fisiológica II", "Ginecología Fisiológica", "Fisiopatología", "Farmacología", "Infectología", "Integración al Desempeño Profesional II"], abre: ["Ginecología Patológica"] },
-    { nombre: "Clínica de Puerperio", requisitos: ["Neonatología II", "Obstetricia Fisiológica II", "Fisiopatología", "Farmacología", "Infectología", "Integración al Desempeño Profesional II"], abre: [] },
-    { nombre: "Clínica de Salud Comunitaria", requisitos: ["Integración al Desempeño Profesional II"], abre: [] },
-    { nombre: "Módulo Integrado Interdisciplinario Multiprofesional I", requisitos: [], abre: ["Módulo Integrado Interdisciplinario Multiprofesional II"] },
-
-    // Tercer año - VI Semestre
-    { nombre: "Neonatología III", requisitos: ["Neonatología II", "Obstetricia Fisiológica II", "Fisiopatología", "Farmacología"], abre: ["Enfermería Médico Quirúrgica", "Clínica Neonatal II"] },
-    { nombre: "Salud Comunitaria II", requisitos: ["Salud Comunitaria I"], abre: ["Clínica de Atención Primaria II"] },
-    { nombre: "Obstetricia Patológica", requisitos: ["Obstetricia Fisiológica II", "Fisiopatología", "Farmacología"], abre: ["Clínica de Partos II", "Clínica de Alto Riesgo Obstétrico", "Enfermería Médico Quirúrgica", "Clínica de Atención Primaria II"] },
-    { nombre: "Gestión y Liderazgo en Salud I", requisitos: ["Investigación en Salud I"], abre: ["Gestión y Liderazgo en Salud II"] },
-    { nombre: "Educación en Salud II", requisitos: ["Educación en Salud I"], abre: [] },
-    { nombre: "Investigación en Salud II", requisitos: ["Investigación en Salud I"], abre: ["Investigación en Salud III"] },
-    { nombre: "Ciencias Sociales y Salud III", requisitos: ["Ciencias Sociales y Salud II"], abre: ["Ciencias Sociales y Salud IV"] },
-    { nombre: "Curso de Formación General III", requisitos: [], abre: [] },
-
-    // Cuarto año - VII Semestre
-    { nombre: "Enfermería Médico Quirúrgica", requisitos: ["Neonatología III", "Obstetricia Patológica"], abre: ["Clínica de Alto Riesgo Obstétrico", "Clínica de Partos II", "Clínica Neonatal II", "Clínica de Enfermería Médico Quirúrgica"] },
-    { nombre: "Reproducción Humana", requisitos: ["Fisiología de Sistemas"], abre: [] },
-    { nombre: "Ginecología Patológica", requisitos: ["Clínica de Atención Primaria I"], abre: ["Clínica de Atención Primaria II", "Clínica de Enfermería Médico Quirúrgica"] },
-    { nombre: "Investigación en Salud III", requisitos: ["Investigación en Salud II"], abre: ["Seminario Unidad de Investigación I"] },
-    { nombre: "Ciencias Sociales y Salud IV", requisitos: ["Ciencias Sociales y Salud III"], abre: [] },
-
-    // Cuarto año - VIII Semestre
-    { nombre: "Clínica Neonatal II", requisitos: ["Neonatología III", "Enfermería Médico Quirúrgica"], abre: ["Internado Neonatología"] },
-    { nombre: "Clínica de Partos II", requisitos: ["Obstetricia Patológica", "Enfermería Médico Quirúrgica"], abre: ["Internado Obstetricia"] },
-    { nombre: "Clínica de Atención Primaria II", requisitos: ["Obstetricia Patológica", "Ginecología Patológica", "Salud Comunitaria II"], abre: ["Internado Atención Primaria"] },
-    { nombre: "Clínica de Alto Riesgo Obstétrico", requisitos: ["Obstetricia Patológica", "Enfermería Médico Quirúrgica"], abre: ["Internado Obstetricia"] },
-    { nombre: "Clínica de Enfermería Médico Quirúrgica", requisitos: ["Enfermería Médico Quirúrgica", "Ginecología Patológica"], abre: ["Internado Ginecología"] },
-    { nombre: "Modulo Integrado Interdisciplinario Multiprofesional II", requisitos: ["Módulo Integrado Interdisciplinario Multiprofesional I"], abre: [] },
-
-    // Quinto año - IX Semestre
-    { nombre: "Internado Neonatología", requisitos: ["Clínica Neonatal II"], abre: [] },
-    { nombre: "Internado Obstetricia", requisitos: ["Clínica de Partos II", "Clínica de Alto Riesgo Obstétrico"], abre: [] },
-    { nombre: "Internado Atención Primaria", requisitos: ["Clínica de Atención Primaria II"], abre: [] },
-    { nombre: "Internado Ginecología", requisitos: ["Clínica de Enfermería Médico Quirúrgica"], abre: [] },
-    { nombre: "Internado Electivo", requisitos: [], abre: [] },
-    { nombre: "Seminario Unidad de Investigación I", requisitos: ["Investigación en Salud III"], abre: ["Seminario Unidad de Investigación II"] },
-
-    // Quinto año - X Semestre
-    { nombre: "Internado Neonatología", requisitos: [], abre: [] },
-    { nombre: "Internado Obstetricia", requisitos: [], abre: [] },
-    { nombre: "Internado Atención Primaria", requisitos: [], abre: [] },
-    { nombre: "Internado Ginecología", requisitos: [], abre: [] },
-    { nombre: "Internado Electivo", requisitos: [], abre: [] },
-    { nombre: "Seminario Unidad de Investigación II", requisitos: ["Seminario Unidad de Investigación I"], abre: [] }
-  ];
-
-  const malla = document.getElementById("malla");
-  const aprobados = new Set();
-
-  function crearRamos() {
-    malla.innerHTML = "";
+    // Distribuir ramos en esa estructura
     ramos.forEach(ramo => {
-      const div = document.createElement("div");
-      div.classList.add("ramo");
-      div.textContent = ramo.nombre;
-      div.dataset.nombre = ramo.nombre;
-      if (!puedeAprobar(ramo)) div.classList.add("bloqueado");
-      malla.appendChild(div);
-    });
-  }
-
-  function puedeAprobar(ramo) {
-    return ramo.requisitos.every(req => aprobados.has(req));
-  }
-
-  function actualizarEstado() {
-    for (const div of malla.children) {
-      const ramoNombre = div.dataset.nombre;
-      const ramo = ramos.find(r => r.nombre === ramoNombre);
-
-      if (aprobados.has(ramoNombre)) {
-        div.classList.add("aprobado");
-        div.classList.remove("bloqueado");
-      } else {
-        if (puedeAprobar(ramo)) {
-          div.classList.remove("bloqueado");
-          div.classList.remove("aprobado");
-        } else {
-          div.classList.add("bloqueado");
-          div.classList.remove("aprobado");
+      for (let ano in anos) {
+        if (Object.keys(anos[ano].semestres).includes(ramo.semestre)) {
+          anos[ano].semestres[ramo.semestre].push(ramo);
         }
       }
+    });
+
+    // Crear HTML dinámico
+    for (const anoKey in anos) {
+      const ano = anos[anoKey];
+
+      const anoDiv = document.createElement("div");
+      anoDiv.classList.add("ano");
+
+      const anoTitulo = document.createElement("h2");
+      anoTitulo.textContent = ano.nombre;
+      anoDiv.appendChild(anoTitulo);
+
+      for (const semestreKey in ano.semestres) {
+        const semDiv = document.createElement("div");
+        semDiv.classList.add("semestre");
+
+        const semTitulo = document.createElement("h3");
+        semTitulo.textContent = `Semestre ${semestreKey}`;
+        semDiv.appendChild(semTitulo);
+
+        const malla = document.createElement("div");
+        malla.classList.add("malla");
+        malla.id = `malla-${anoKey}-${semestreKey}`;
+
+        ano.semestres[semestreKey].forEach(ramo => {
+          const div = document.createElement("div");
+          div.classList.add("ramo");
+          div.textContent = ramo.nombre;
+          div.dataset.nombre = ramo.nombre;
+          // Bloqueado si tiene requisitos
+          if (ramo.requisitos.length > 0) div.classList.add("bloqueado");
+          malla.appendChild(div);
+        });
+
+        semDiv.appendChild(malla);
+        anoDiv.appendChild(semDiv);
+      }
+
+      mallaContainer.appendChild(anoDiv);
     }
-  }
 
-  malla.addEventListener("click", (e) => {
-    const target = e.target;
-    if (!target.classList.contains("ramo")) return;
+    // Evento para aprobar ramos y desbloquear los siguientes
+    mallaContainer.addEventListener("click", e => {
+      if (!e.target.classList.contains("ramo") || e.target.classList.contains("bloqueado")) return;
 
-    const nombre = target.dataset.nombre;
-    if (aprobados.has(nombre)) return;
-    if (target.classList.contains("bloqueado")) return;
+      e.target.classList.toggle("aprobado");
 
-    aprobados.add(nombre);
-    actualizarEstado();
-  });
+      const nombre = e.target.dataset.nombre;
+      const ramoActual = ramos.find(r => r.nombre === nombre);
+      if (!ramoActual) return;
 
-  crearRamos();
-  actualizarEstado();
-</script>
+      // Si se aprobó, desbloquear los que dependen
+      if (e.target.classList.contains("aprobado")) {
+        ramoActual.abre.forEach(nombreDesbloqueado => {
+          const desbloqueado = document.querySelector(`[data-nombre='${nombreDesbloqueado}']`);
+          if (desbloqueado) {
+            const ramoObj = ramos.find(r => r.nombre === nombreDesbloqueado);
+            if (ramoObj) {
+              ramoObj.requisitos = ramoObj.requisitos.filter(r => r !== nombre);
+              if (ramoObj.requisitos.length === 0) desbloqueado.classList.remove("bloqueado");
+            }
+          }
+        });
+      } else {
+        // Si se desaprueba, bloquear de nuevo los que dependen
+        ramoActual.abre.forEach(nombreBloqueado => {
+          const bloqueado = document.querySelector(`[data-nombre='${nombreBloqueado}']`);
+          if (bloqueado) {
+            const ramoObj = ramos.find(r => r.nombre === nombreBloqueado);
+            if (ramoObj) {
+              if (!ramoObj.requisitos.includes(nombre)) {
+                ramoObj.requisitos.push(nombre);
+              }
+              bloqueado.classList.add("bloqueado");
+              // También desaprueba el ramo desbloqueado automáticamente
+              bloqueado.classList.remove("aprobado");
+            }
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
