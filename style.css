@@ -19,14 +19,26 @@ h1 {
   color: #a8326e;
 }
 
+/* Contenedor de años: fila horizontal */
+#malla-container {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto; /* scroll horizontal si no cabe */
+  padding-bottom: 10px;
+}
+
+/* Cada año: columna vertical con semestres en columna */
 .ano {
-  margin-bottom: 40px;
+  flex: 0 0 320px; /* ancho fijo para cada año */
+  display: flex;
+  flex-direction: column;
+  background: #ffe6f0;
   border: 2px solid #e76ebf;
   border-radius: 12px;
   padding: 20px;
-  background: #ffe6f0;
 }
 
+/* Título del año */
 .ano > h2 {
   margin-bottom: 15px;
   color: #c2185b;
@@ -34,22 +46,28 @@ h1 {
   padding-bottom: 8px;
 }
 
+/* Semestres en columna vertical */
 .semestre {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 20px;
 }
 
+/* Título semestre */
 .semestre > h3 {
   margin-bottom: 12px;
   font-weight: 600;
   color: #9c2751;
 }
 
+/* Contenedor de ramos dentro de semestre: columna también, pero puede hacer wrap si quieres */
 .malla {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-direction: column;
+  gap: 8px;
 }
 
+/* Ramos: cuadro rosa, clickeable */
 .ramo {
   cursor: pointer;
   background: #f7c8e0;
@@ -63,6 +81,7 @@ h1 {
   user-select: none;
   transition: all 0.3s ease;
   border: 2px solid transparent;
+  margin-bottom: 6px;
 }
 
 .ramo:hover {
@@ -71,6 +90,7 @@ h1 {
   border-color: #b63b75;
 }
 
+/* Bloqueados */
 .ramo.bloqueado {
   background: #f4b7d6;
   color: #8e4c6b;
@@ -80,6 +100,7 @@ h1 {
   border-color: #d894af;
 }
 
+/* Aprobados */
 .ramo.aprobado {
   background: #d94a95;
   color: #fff;
@@ -93,12 +114,21 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .malla {
-    justify-content: center;
+  #malla-container {
+    flex-direction: column;
+    overflow-x: visible;
   }
-
+  .ano {
+    width: 100%;
+    flex: none;
+  }
+  .malla {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
   .ramo {
     min-width: 140px;
-    font-size: 14px;
+    margin-right: 10px;
+    margin-bottom: 10px;
   }
 }
